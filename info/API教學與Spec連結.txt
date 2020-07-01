@@ -1,0 +1,2 @@
+[API 開發說明文件] : https://hackmd.io/@UcQg6jwlT_WL_ZNkPZMm6Q/BJfELe_c8
+[API 規格說明文件] : https://hackmd.io/@nqf_7suCTA2B-tYY2TvmYw/r11xDuMoL
