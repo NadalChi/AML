@@ -1,6 +1,7 @@
 import torch
 from transformers import BertTokenizer, BertModel
 
+eps = 1e-6
 class BertClassifier(torch.nn.Module):
     def __init__(self, pretrained_model_path='./pytorch-ernie'):
         super(BertClassifier, self).__init__()
@@ -16,5 +17,5 @@ class BertClassifier(torch.nn.Module):
         return output
 
 def mask_BCE_loss(y_pred, y_true, padding_mask):
-    return -1*torch.mean( padding_mask*y_pred*torch.log(y_true)+ padding_mask*(1-y_pred)*torch.log(1-y_true) )
+    return -1*torch.mean( padding_mask*y_true*torch.log(y_pred+eps)+ padding_mask*(1-y_true)*torch.log(1-y_pred+eps) )
 
