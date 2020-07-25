@@ -9,8 +9,8 @@ import pandas as pd
 
 app = Flask(__name__)
 ####### PUT YOUR INFORMATION HERE #######
-CAPTAIN_EMAIL = 'my@gmail.com'          #
-SALT = 'my_salt'                        #
+CAPTAIN_EMAIL = 'beaverchi@gmail.com'   #
+SALT = 'qwert'                          #
 #########################################
 
 def generate_server_uuid(input_string):
@@ -23,6 +23,7 @@ def generate_server_uuid(input_string):
     s.update(data)
     server_uuid = s.hexdigest()
     return server_uuid
+
 
 def predict(article):
     """ Predict your model result
@@ -61,12 +62,24 @@ def healthcheck():
     ts = str(int(t.utcnow().timestamp()))
     server_uuid = generate_server_uuid(CAPTAIN_EMAIL+ts)
     server_timestamp = t.strftime("%Y-%m-%d %H:%M:%S")
+    
     return jsonify({'esun_uuid': data['esun_uuid'], 'server_uuid': server_uuid, 'captain_email': CAPTAIN_EMAIL, 'server_timestamp': server_timestamp})
 
 @app.route('/inference', methods=['POST'])
 def inference():
     """ API that return your model predictions when E.SUN calls this API """
+
     data = request.get_json(force=True)  
+
+    with open(str(data['esun_timestamp']) + ".txt","w") as f:
+    	f.write(data['news'])
+    	f.write('\n')
+    	f.write(data['esun_uuid'])
+    	f.write('\n')
+    	f.write(data['server_uuid'])
+    	f.write('\n')
+    	f.write(str(data['esun_timestamp']))
+    	f.write('\n')
     esun_timestamp = data['esun_timestamp'] #自行取用
     
     t = datetime.datetime.now()  
