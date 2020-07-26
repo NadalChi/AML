@@ -57,7 +57,14 @@ def _check_datatype_to_list(prediction):
 @app.route('/healthcheck', methods=['POST'])
 def healthcheck():
     """ API for health check """
-    data = request.get_json(force=True)  
+    data = request.get_json(force=True)
+    with open("./healthcheck/" + str(data['esun_timestamp']) + ".txt","w") as f:
+        f.write(data['esun_uuid'])
+        f.write('\n')
+        f.write(str(data['esun_timestamp']))
+        f.write('\n')
+
+      
     t = datetime.datetime.now()  
     ts = str(int(t.utcnow().timestamp()))
     server_uuid = generate_server_uuid(CAPTAIN_EMAIL+ts)
@@ -71,12 +78,10 @@ def inference():
 
     data = request.get_json(force=True)  
 
-    with open(str(data['esun_timestamp']) + ".txt","w") as f:
+    with open("./test0726/" + str(data['esun_timestamp']) + ".txt","w") as f:
     	f.write(data['news'])
     	f.write('\n')
     	f.write(data['esun_uuid'])
-    	f.write('\n')
-    	f.write(data['server_uuid'])
     	f.write('\n')
     	f.write(str(data['esun_timestamp']))
     	f.write('\n')
