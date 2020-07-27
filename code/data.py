@@ -74,4 +74,14 @@ def map_batch_prediction_to_text(input_tokens, predictions):
                 name += t
         batch_text_prediction.append(text_prediction)
     return [list(set(p)) for p in batch_text_prediction]
-                    
+
+def split_data(token_tensor, mask_tensor, target_tensor, max_length):
+    bs, seq = token_tensor.size()
+    output_token_tensor = []
+    output_mask_tensor = []
+    output_target_tensor = []
+    for i in range(int(np.ceil(seq/max_length))):
+        output_token_tensor.append(token_tensor[:,i*max_length:(i+1)*max_length])
+        output_mask_tensor.append(mask_tensor[:,i*max_length:(i+1)*max_length])
+        output_target_tensor.append(target_tensor[:,i*max_length:(i+1)*max_length])
+    return output_token_tensor, output_mask_tensor, output_target_tensor
