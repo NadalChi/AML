@@ -7,10 +7,10 @@
 ```
 
     Cloning into 'AML'...
-    remote: Enumerating objects: 4914, done.[K
-    remote: Counting objects: 100% (4914/4914), done.[K
-    remote: Compressing objects: 100% (4795/4795), done.[K
-    remote: Total 4914 (delta 71), reused 4887 (delta 53), pack-reused 0[K
+    remote: Enumerating objects: 4914, done.
+    remote: Counting objects: 100% (4914/4914), done.
+    remote: Compressing objects: 100% (4795/4795), done.
+    remote: Total 4914 (delta 71), reused 4887 (delta 53), pack-reused 0
     Receiving objects: 100% (4914/4914), 7.04 MiB | 747.00 KiB/s, done.
     Resolving deltas: 100% (71/71), done.
     Updating files: 100% (5036/5036), done.
