@@ -1,3 +1,8 @@
+# Introduction
+
+This is a tutorial using NLP algorithm to determine whether the article contains AML-related focal persons.  
+Follow the steps below. You will be able to test your own articles.
+
 ## Installation
 * Clone the repo to your local machine using https://github.com/NadalChi/AML.git
 
