@@ -4,7 +4,6 @@ import chinese_converter
 import re
 import numpy as np
 from transformers import BertForTokenClassification
-### from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 
@@ -58,7 +57,6 @@ def make_data(a, b):
     data = []
     model = BertModel.from_pretrained('bert-base-chinese')
     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese', do_lower_case = True)
-    data = []
     for i in range(a, b):
         f = open("training_set/" + str(i) + ".txt", "r")
         lines = f.readlines()
@@ -161,7 +159,6 @@ def train(trainloader, validloader):
         temp = 0
         running_loss = 0.0
         for data in trainloader:
-            #print(temp)
             temp += 1
             tokens_tensors, \
             masks_tensors, labels = [t.to(device) for t in data]
@@ -177,10 +174,7 @@ def train(trainloader, validloader):
             y_pred, y_true, masks_tensors, y_true_inverse = reshape_for_loss_fn(logits, labels, masks_tensors, device)
 
             loss = mask_BCE_loss(y_pred, y_true, masks_tensors, y_true_inverse, is_training = True)
-            # print(outputs[0])
-            # print(loss)
-            #loss = outputs[0]
-            # backward
+
             loss.backward()
             optimizer.step()
 
@@ -258,21 +252,18 @@ def reshape_for_loss_fn(logits, labels, masks_tensors, device):
     return y_pred, y_true, masks_tensors, y_true_inverse
 
 def mask_BCE_loss(y_pred, y_true, padding_mask, y_true_inverse, is_training=False, epsilon=1e-06):
-    tp = (padding_mask * y_true * y_pred).sum().to(torch.float32)
-    tn = (padding_mask * (y_true_inverse) * (1 - y_pred)).sum().to(torch.float32)
-    fp = (padding_mask * (y_true_inverse) * y_pred).sum().to(torch.float32)
-    fn = (padding_mask * y_true * (1 - y_pred)).sum().to(torch.float32)
-    precision = tp / (tp + fp + epsilon)
-    recall = tp / (tp + fn + epsilon)
-    b = 1
-    f1 = (1 + b) * (precision * recall) / (b * precision + recall + epsilon)
-    f1 = f1.clamp(min=epsilon, max=1-epsilon)
-    # if is_training == False:
-    #     print(tp,fp,fn)
-    #     print(f1)
-    return 1 - f1.mean()
+    # tp = (padding_mask * y_true * y_pred).sum().to(torch.float32)
+    # tn = (padding_mask * (y_true_inverse) * (1 - y_pred)).sum().to(torch.float32)
+    # fp = (padding_mask * (y_true_inverse) * y_pred).sum().to(torch.float32)
+    # fn = (padding_mask * y_true * (1 - y_pred)).sum().to(torch.float32)
+    # precision = tp / (tp + fp + epsilon)
+    # recall = tp / (tp + fn + epsilon)
+    # b = 1
+    # f1 = (1 + b) * (precision * recall) / (b * precision + recall + epsilon)
+    # f1 = f1.clamp(min=epsilon, max=1-epsilon)
+    # return 1 - f1.mean()
 
-    #return -1*torch.mean( padding_mask*y_true*torch.log(y_pred+epsilon) )
+    return -1*torch.mean( padding_mask*y_true*torch.log(y_pred+epsilon) )
 
 def main():
     trainset = make_data(1, 4000)

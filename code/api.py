@@ -15,7 +15,7 @@ from transformers import BertForTokenClassification
 
 app = Flask(__name__)
 ####### PUT YOUR INFORMATION HERE #######
-CAPTAIN_EMAIL = 'beaverchi@gmail.com'   #
+CAPTAIN_EMAIL = 'EMAIL@gmail.com'       #
 SALT = 'qwert'                          #
 #########################################
 
@@ -57,7 +57,6 @@ def testing(text, model):
     for i in data:
         if 2 <= len(i) <= 4:
             res.append(i)
-    print(res)
     return res
 def generate_server_uuid(input_string):
     """ Create your own server_uuid
@@ -106,12 +105,6 @@ def _check_datatype_to_list(prediction):
 def healthcheck():
     """ API for health check """
     data = request.get_json(force=True)
-    with open("./healthcheck/" + str(data['esun_timestamp']) + ".txt","w") as f:
-        f.write(data['esun_uuid'])
-        f.write('\n')
-        f.write(str(data['esun_timestamp']))
-        f.write('\n')
-
       
     t = datetime.datetime.now()  
     ts = str(int(t.utcnow().timestamp()))
@@ -126,13 +119,6 @@ def inference():
 
     data = request.get_json(force=True)  
 
-    with open("./inference/test0729/" + str(data['esun_timestamp']) + ".txt","w") as f:
-    	f.write(data['news'])
-    	f.write('\n')
-    	f.write(data['esun_uuid'])
-    	f.write('\n')
-    	f.write(str(data['esun_timestamp']))
-    	f.write('\n')
     esun_timestamp = data['esun_timestamp'] #自行取用
     
     t = datetime.datetime.now()  
@@ -152,7 +138,7 @@ if __name__ == "__main__":
 
     model = BertForTokenClassification.from_pretrained(
         PRETRAINED_MODEL_NAME, num_labels=NUM_LABELS)
-    model.load_state_dict(torch.load('./model/0728_1_22_3.0149'))
+    model.load_state_dict(torch.load('../model/finetuned_token_cls_model'))
     model = model.to("cuda:0")
     model.eval()
 
